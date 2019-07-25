@@ -4,6 +4,16 @@
 # Log file
 *.log
 
+# About IntelliJ
+*.iml
+/.idea/
+/out/
+/target/
+
+# About node
+/node_modules/
+/plugins/
+
 # BlueJ files
 *.ctxt
 
