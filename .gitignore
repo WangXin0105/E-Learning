@@ -9,6 +9,8 @@
 /.idea/
 /out/
 /target/
+.idea/
+target/
 
 # About node
 /node_modules/
