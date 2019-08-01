@@ -47,7 +47,14 @@
             size="small" type="text"
             @click="del(page.row.pageId)">删除
           </el-button>
-          <el-button @click="preview(page.row.pageId)" type="text" size="small">页面预览</el-button>
+          <el-button
+            size="small" type="text"
+            @click="preview(page.row.pageId)">页面预览
+          </el-button>
+          <el-button
+            size="small" type="text"
+            @click="postPage(page.row.pageId)">发布
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -111,8 +118,19 @@
           })
         })
       },
-      preview:function (pageId) {
-        window.open("http://www.xuecheng.com:8888/cms/preview/"+pageId);
+      preview: function (pageId) {
+        window.open("http://www.xuecheng.com:8888/cms/preview/" + pageId);
+      },
+      postPage: function (id) {
+        this.$confirm('确认发布该页面吗?', '提示', {}).then(() => {
+          cmsApi.page_postPage(id).then((res) => {
+            if (res.success) {
+              this.$message.success('发布成功，请稍后查看结果');
+            } else {
+              this.$message.error('发布失败');
+            }
+          });
+        });
       }
     },
     created() {
