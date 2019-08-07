@@ -14,9 +14,7 @@ target/
 
 # About node
 /node_modules/
-/plugins/
 node_modules/
-plugins/
 
 # BlueJ files
 *.ctxt
