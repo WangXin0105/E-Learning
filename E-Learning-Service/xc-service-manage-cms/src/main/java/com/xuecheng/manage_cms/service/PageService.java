@@ -270,5 +270,14 @@ public class PageService {
         return cmsPage;
     }
 
+    public CmsPageResult save(CmsPage cmsPage){
+        CmsPage cmsPage1 = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
+        if(cmsPage1 != null){
+            cmsPage.setPageId(cmsPage1.getPageId());
+            return this.update(cmsPage);
+        }else{
+            return this.add(cmsPage);
+        }
+    }
 
 }
