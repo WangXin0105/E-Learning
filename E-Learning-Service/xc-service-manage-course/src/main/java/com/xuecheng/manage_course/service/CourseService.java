@@ -45,6 +45,9 @@ public class CourseService {
     CoursePicRepository coursePicRepository;
 
     @Autowired
+    TeachplanMediaRepository teachplanMediaRepository;
+
+    @Autowired
     TeachplanMapper teachplanMapper;
 
     @Autowired
@@ -346,5 +349,23 @@ public class CourseService {
         courseBaseById.setStatus("202002");
         courseBaseRepository.save(courseBaseById);
         return courseBaseById;
+    }
+
+    public ResponseResult saveMedia(TeachplanMedia teachplanMedia) {
+        if (teachplanMedia == null) {
+            ExceptionCast.cast(CommonCode.INVALID_PARAM);
+        }
+        String teachplanId = teachplanMedia.getTeachplanId();
+        Optional<Teachplan> teachplanOptional = teachplanRepository.findById(teachplanId);
+        if (!teachplanOptional.isPresent()) {
+            ExceptionCast.cast(CourseCode.COURSE_MEDIA_TEACHPLAN_ISNULL);
+        }
+        Teachplan teachplan = teachplanOptional.get();
+        String grade = teachplan.getGrade();
+        if (StringUtils.isBlank(grade) || !grade.equals("3")) {
+            ExceptionCast.cast(CourseCode.COURSE_MEDIA_TEACHPLAN_GRADEERROR);
+        }
+        teachplanMediaRepository.save(teachplanMedia);
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 }
