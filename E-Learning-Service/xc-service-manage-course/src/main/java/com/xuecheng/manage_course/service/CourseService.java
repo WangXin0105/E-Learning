@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,9 @@ public class CourseService {
 
     @Autowired
     TeachplanMediaRepository teachplanMediaRepository;
+
+    @Autowired
+    TeachplanMediaPubRepository teachplanMediaPubRepository;
 
     @Autowired
     TeachplanMapper teachplanMapper;
@@ -292,9 +296,25 @@ public class CourseService {
             ExceptionCast.cast(CourseCode.COURSE_PUBLISH_CREATE_INDEX_ERROR);
         }
 
+        //保存课程计划媒体信息到索引表中
+        saveTeachplanMediaPub(id);
+
         //得到页面的url
         String pageUrl = cmsPostPageResult.getPageUrl();
         return new CoursePublishResult(CommonCode.SUCCESS,pageUrl);
+    }
+
+    private void saveTeachplanMediaPub(String courseId) {
+        List<TeachplanMedia> teachplanMediaList = teachplanMediaRepository.findByCourseId(courseId);
+        teachplanMediaPubRepository.deleteByCourseId(courseId);
+        List<TeachplanMediaPub> teachplanMediaPubList = new ArrayList<>();
+        for (TeachplanMedia teachplanMedia : teachplanMediaList) {
+            TeachplanMediaPub teachplanMediaPub = new TeachplanMediaPub();
+            BeanUtils.copyProperties(teachplanMedia, teachplanMediaPub);
+            teachplanMediaPub.setTimestamp(new Date());
+            teachplanMediaPubList.add(teachplanMediaPub);
+        }
+        teachplanMediaPubRepository.saveAll(teachplanMediaPubList);
     }
 
     private CoursePub saveCoursePub(String id,CoursePub coursePub){
