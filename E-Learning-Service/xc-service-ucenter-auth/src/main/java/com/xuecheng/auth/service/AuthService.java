@@ -67,6 +67,25 @@ public class AuthService {
         return expire>0;
     }
 
+    public boolean delToken(String access_token){
+        String key = "user_token:" + access_token;
+        stringRedisTemplate.delete(key);
+        return true;
+    }
+
+    public AuthToken getUserToken(String token){
+        String key = "user_token:" + token;
+        String value = stringRedisTemplate.opsForValue().get(key);
+        try {
+            AuthToken authToken = JSON.parseObject(value, AuthToken.class);
+            return authToken;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     private AuthToken applyToken(String username, String password, String clientId, String clientSecret){
         //从eureka中获取认证服务的地址（因为spring security在认证服务中）
         ServiceInstance serviceInstance = loadBalancerClient.choose(XcServiceList.XC_SERVICE_UCENTER_AUTH);
@@ -118,4 +137,6 @@ public class AuthService {
         byte[] encode = Base64Utils.encode(string.getBytes());
         return "Basic "+new String(encode);
     }
+
+
 }
