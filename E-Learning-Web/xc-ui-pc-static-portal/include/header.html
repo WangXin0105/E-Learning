@@ -20,59 +20,60 @@
     <script src="/js/util.js"></script>
     <script src="/js/public.js"></script>
     <script src="/js/login.js"></script>
+    <script src="/css/el/index.js"></script>
 
 
 </head>
 <body >
 <div id="app">
-<!--头部导航-->
-<header>
-    <div class="learingHeader">
-        <nav class="navbar">
-            <div class="">
-                <div class="logo"><img src="/img/asset-logoIco.png" width="100%" alt=""></div>
-                <div class="nav-list">
-                    <ul class="nav navbar-nav">
-                        <li ><a href="/">首页</a></li>
-                        <li><a href="/course/search">课程</a></li>
-                        <li><a href="#">职业规划</a></li>
-                        <li></li>
-                    </ul>
-                </div>
+    <!--头部导航-->
+    <header>
+        <div class="learingHeader">
+            <nav class="navbar">
+                <div class="">
+                    <div class="logo"><img src="/img/asset-logoIco.png" width="100%" alt=""></div>
+                    <div class="nav-list">
+                        <ul class="nav navbar-nav">
+                            <li ><a href="/">首页</a></li>
+                            <li><a href="/course/search">课程</a></li>
+                            <li><a href="#">职业规划</a></li>
+                            <li></li>
+                        </ul>
+                    </div>
 
-                <div class="sign-in">
-                    <!-- 未登录 -->
-                    <!-- <a href="#">登录 </a> <span> | </span> <a href="#"> 注册</a>-->
-                    <!-- 登录 -->
-                    <!--<a href="#" class="personal"><span class="personalIco"></span>消息</a>-->
-                    <span v-if="logined == true">欢迎{{this.user.username}}</span>
-                    <a href="javascript:;" @click="logout" v-if="logined == true">退出</a>
-                    <a href="http://ucenter.xuecheng.com/" class="personal" target="_blank">我的学习</a>
-                    <a href="javascript:;" @click="showlogin" v-if="logined == false">登陆&nbsp;|&nbsp;注册</a>
-                    <a href="http://teacher.xuecheng.com/" class="personal" target="_blank">教学提供方</a>
-                    <a href="http://system.xuecheng.com/" class="personal" target="_blank">系统后台</a>
-                    <!--<a href="#" class="myInfo"><img src="img/asset-myImg.jpg" alt="">个人中心</a>-->
+                    <div class="sign-in">
+                        <!-- 未登录 -->
+                        <!-- <a href="#">登录 </a> <span> | </span> <a href="#"> 注册</a>-->
+                        <!-- 登录 -->
+                        <!--<a href="#" class="personal"><span class="personalIco"></span>消息</a>-->
+                        <span v-if="logined == true">欢迎{{this.user.username}}</span>
+                        <a href="javascript:;" @click="logout" v-if="logined == true">退出</a>
+                        <a href="http://ucenter.xuecheng.com/" class="personal" target="_blank">我的学习</a>
+                        <a href="javascript:;" @click="showlogin" v-if="logined == false">登陆&nbsp;|&nbsp;注册</a>
+                        <a href="http://teacher.xuecheng.com/" class="personal" target="_blank">教学提供方</a>
+                        <a href="http://system.xuecheng.com/" class="personal" target="_blank">系统后台</a>
+                        <!--<a href="#" class="myInfo"><img src="img/asset-myImg.jpg" alt="">个人中心</a>-->
+                    </div>
+                    <!--<div class="starch">
+                        <div><input type="text" class="input-search" placeholder="输入查询关键词"></div>
+                        <div class="searchword"><a href="">搜索</a> </div>
+                    </div>-->
+                    <div class="starch">
+                        <div><input type="text" class="input-search" v-model="keyword" @keyup.enter="search"  placeholder="输入查询关键词"></div>
+                        <div class="searchword"><a @click="search">搜索</a> </div>
+                    </div>
                 </div>
-                <!--<div class="starch">
-                    <div><input type="text" class="input-search" placeholder="输入查询关键词"></div>
-                    <div class="searchword"><a href="">搜索</a> </div>
-                </div>-->
-                <div class="starch">
-                    <div><input type="text" class="input-search" v-model="keyword" @keyup.enter="search"  placeholder="输入查询关键词"></div>
-                    <div class="searchword"><a @click="search">搜索</a> </div>
-                </div>
-            </div>
-        </nav>
-    </div>
+            </nav>
+        </div>
 
-</header>
+    </header>
 </div>
 <script type="text/x-template" id="login">
-<div>login....</div>
+    <div>login....</div>
 </script>
 <script>
 
-  var headVm= new Vue({   //创建一个Vue的实例
+    var headVm= new Vue({   //创建一个Vue的实例
         el: "#app", //挂载点是id="app"的地方
 
         data: {
@@ -98,7 +99,7 @@
                     window.location = "/course/search?keyword="+keyword
                 }
             },
-           logout: function () {
+            logout: function () {
                 this.$confirm('确认退出吗?', '提示', {
                 }).then(() => {
                     //跳转到统一登陆
@@ -112,7 +113,7 @@
                 let activeUser= getActiveUser();
                 //取出cookie中的令牌
                 let uid = getCookie("uid")
-                //console.log(activeUser)
+                console.log(activeUser)
                 if(activeUser && uid && uid == activeUser.uid){
                     this.logined = true
                     this.user = activeUser;
@@ -141,7 +142,7 @@
                 window.location = "http://ucenter.xuecheng.com/#/login?returnUrl="+ Base64.encode(window.location)
             }
         },
-       created() {
+        created() {
 
         },
         mounted(){
